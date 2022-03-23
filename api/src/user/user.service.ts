@@ -2,13 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { NotFoundError } from 'rxjs';
-import { User } from './user.interface';
+import { User, UserDetails } from './user.interface';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
-  _getUserDetails(user: User) {
+  _getUserDetails(user: User)  {
     return {
       id: user._id,
       name: user.name,

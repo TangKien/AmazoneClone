@@ -6,10 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { Product } from './product.interface';
 import { createProductDto, updateProductDto } from './productDto';
+import { JwtGuard } from 'src/guards/jwt.guard';
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
@@ -21,6 +23,7 @@ export class ProductController {
   }
 
   //GET ONE PRODUCT
+  @UseGuards(JwtGuard)
   @Get(':id')
   findProduct(@Param('id') id: string): Promise<Product> {
     return this.productService.find(id);
@@ -28,9 +31,7 @@ export class ProductController {
 
   //CREATE NEW PRODUCT
   @Post()
-  createPost(
-    @Body() createProductDto : createProductDto
-  ): Promise<Product> {
+  createPost(@Body() createProductDto: createProductDto): Promise<Product> {
     return this.productService.create(createProductDto);
   }
 
@@ -38,7 +39,7 @@ export class ProductController {
   @Patch(':id')
   updatePost(
     @Param('id') id: string,
-    @Body() updateProductDto : updateProductDto
+    @Body() updateProductDto: updateProductDto,
   ): Promise<Product> {
     return this.productService.update(id, updateProductDto);
   }
